@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#090909">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="GAME HUB PRO">
+<meta name="description" content="A dark, mobile-friendly game launcher and practice hub.">
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="icon" href="./icon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="./icon.svg">
+<title>GAME HUB PRO</title>
+<style>
+:root{color-scheme:dark;--bg:#080808;--panel:#121212;--line:#292929;--red:#ff3038;--muted:#a6a6a6}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 50% -20%,#3a1013 0,transparent 45%),var(--bg);color:#fff;font:16px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;min-height:100vh}
+header{padding:calc(22px + env(safe-area-inset-top)) 18px 18px;max-width:900px;margin:auto}
+.brand{font-size:12px;letter-spacing:.24em;color:var(--red);font-weight:900}.logo{font-size:clamp(30px,8vw,48px);font-weight:950;letter-spacing:-.06em;margin:6px 0}.logo span{color:var(--red)}.sub{color:var(--muted);margin:0}
+main{max-width:900px;margin:auto;padding:0 16px 90px}.section-head{display:flex;justify-content:space-between;align-items:center;margin:26px 2px 12px}.section-head h2{font-size:15px;letter-spacing:.12em;margin:0}.tag{font-size:10px;color:#ff8589;border:1px solid #5b2528;border-radius:99px;padding:5px 9px}
+.games{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.game{background:linear-gradient(145deg,#191919,#0e0e0e);border:1px solid var(--line);border-radius:17px;padding:15px;min-height:145px;display:flex;flex-direction:column;justify-content:space-between}.game .emoji{font-size:28px}.game h3{margin:8px 0 2px;font-size:17px}.game p{margin:0;color:var(--muted);font-size:12px}.open{display:inline-flex;align-items:center;justify-content:center;text-decoration:none;color:white;background:#242424;border:1px solid #3b3b3b;border-radius:10px;padding:9px 12px;font-weight:800;font-size:12px;margin-top:13px}.open:active,.action:active{transform:scale(.98)}
+.tools{display:grid;grid-template-columns:1fr;gap:12px}.panel{background:var(--panel);border:1px solid var(--line);border-radius:17px;padding:17px}.panel h3{margin:0 0 5px;font-size:17px}.panel p{margin:0;color:var(--muted);font-size:13px}.action{border:0;border-radius:10px;background:var(--red);color:#fff;font-weight:900;padding:11px 14px;margin-top:14px;font-size:13px;cursor:pointer}.ghost{background:#242424;border:1px solid #393939}.stats{display:flex;gap:10px;margin-top:12px}.stat{flex:1;background:#090909;border-radius:10px;padding:10px}.stat b{display:block;font-size:20px}.stat small{color:var(--muted)}
+#target{width:74px;height:74px;border-radius:50%;background:var(--red);border:6px solid #ff9a9d;box-shadow:0 0 30px #ff303866;position:absolute;display:none;touch-action:manipulation}
+.drill{height:190px;background:#080808;border:1px solid #303030;border-radius:12px;margin-top:12px;position:relative;overflow:hidden;display:grid;place-items:center;color:#777;font-size:13px;text-align:center;padding:12px}
+footer{text-align:center;color:#777;font-size:11px;padding:24px 10px 0}.notice{font-size:11px;color:#888;margin-top:12px}
+@media(min-width:650px){.tools{grid-template-columns:1fr 1fr}.games{grid-template-columns:repeat(4,minmax(0,1fr))}.game{min-height:170px}}
+</style>
+</head>
+<body>
+<header><div class="brand">CART3R.JAILBREAK :</div><div class="logo">GAME HUB <span>PRO</span></div><p class="sub">Your mobile gaming hub. Quick links, clean setup, practice tools.</p></header>
+<main>
+<div class="section-head"><h2>YOUR GAMES</h2><span class="tag">MOBILE HUB</span></div>
+<section class="games" aria-label="Games">
+<article class="game"><div><div class="emoji">🪂</div><h3>Fortnite</h3><p>Official iOS availability and game info.</p></div><a class="open" href="https://www.fortnite.com/mobile/ios" target="_blank" rel="noopener">OPEN FORTNITE ↗</a></article>
+<article class="game"><div><div class="emoji">🧱</div><h3>Roblox</h3><p>Open the official Roblox listing.</p></div><a class="open" href="https://apps.apple.com/app/roblox/id431946152" target="_blank" rel="noopener">OPEN ROBLOX ↗</a></article>
+<article class="game"><div><div class="emoji">⛏️</div><h3>Minecraft</h3><p>Open the official Minecraft listing.</p></div><a class="open" href="https://apps.apple.com/app/minecraft/id479516143" target="_blank" rel="noopener">OPEN MINECRAFT ↗</a></article>
+<article class="game"><div><div class="emoji">⭐</div><h3>Brawl Stars</h3><p>Open the official Brawl Stars listing.</p></div><a class="open" href="https://apps.apple.com/app/brawl-stars/id1229016807" target="_blank" rel="noopener">OPEN BRAWL STARS ↗</a></article>
+</section>
+<div class="section-head"><h2>PRACTICE ZONE</h2><span class="tag">BUILT IN</span></div>
+<section class="tools">
+<article class="panel"><h3>Tap Reflex Trainer</h3><p>Tap the target as quickly as you can. A simple standalone practice game.</p><div class="stats"><div class="stat"><b id="score">0</b><small>HITS</small></div><div class="stat"><b id="time">20</b><small>SECONDS</small></div></div><div class="drill" id="arena"><span id="hint">Press START, then tap the red target.</span><button id="target" aria-label="Tap target"></button></div><button class="action" id="start">START TRAINING</button></article>
+<article class="panel"><h3>Build & Edit Drills</h3><p>Practice a steady sequence of build and edit key patterns away from live matches.</p><div class="drill" id="sequence" style="font-size:18px;font-weight:900;letter-spacing:.08em">WALL → RAMP → FLOOR → EDIT</div><button class="action ghost" id="next">NEXT DRILL</button><p class="notice">Practice prompts only; this hub does not modify or control other games.</p></article>
+</section>
+<div class="section-head"><h2>INSTALL ON IPHONE</h2><span class="tag">HOME SCREEN</span></div>
+<article class="panel"><h3>Add GAME HUB PRO</h3><p>In Safari, tap the Share icon, choose <b>Add to Home Screen</b>, then tap Add. The site can be opened like an app. iOS may require an internet connection for the first visit.</p><p class="notice">This is a website/PWA, not a signed IPA. It cannot place a cheat menu over other games or inject code into them.</p></article>
+<footer>GAME HUB PRO · Independent fan-made launcher · Not affiliated with the games shown.</footer>
+</main>
+<script>
+const arena=document.getElementById('arena'),target=document.getElementById('target'),scoreEl=document.getElementById('score'),timeEl=document.getElementById('time'),hint=document.getElementById('hint'),start=document.getElementById('start');
+let score=0,remaining=20,tick=null,running=false;
+function moveTarget(){const maxX=Math.max(0,arena.clientWidth-84),maxY=Math.max(0,arena.clientHeight-84);target.style.left=(Math.random()*maxX)+'px';target.style.top=(Math.random()*maxY)+'px';}
+function stop(){running=false;clearInterval(tick);target.style.display='none';hint.textContent='Training complete — '+score+' hits. Press START to try again.';start.disabled=false;start.textContent='TRY AGAIN';}
+start.addEventListener('click',()=>{clearInterval(tick);score=0;remaining=20;running=true;scoreEl.textContent='0';timeEl.textContent='20';hint.textContent='Tap the target!';target.style.display='block';start.disabled=true;start.textContent='TRAINING...';moveTarget();tick=setInterval(()=>{remaining--;timeEl.textContent=remaining;if(remaining<=0)stop();},1000);});
+target.addEventListener('click',()=>{if(!running)return;score++;scoreEl.textContent=score;moveTarget();});
+const drills=['WALL → RAMP → FLOOR → EDIT','RAMP → FLOOR → CONE → EDIT','WALL → FLOOR → RAMP → RESET','FLOOR → CONE → EDIT → RESET'];let drill=0;
+document.getElementById('next').addEventListener('click',()=>{drill=(drill+1)%drills.length;document.getElementById('sequence').textContent=drills[drill];});
+if('serviceWorker' in navigator && location.protocol.startsWith('http')){window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));}
+</script>
+</body></html>
