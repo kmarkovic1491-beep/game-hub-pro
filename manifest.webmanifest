@@ -1,0 +1,13 @@
+{
+  "name": "GAME HUB PRO",
+  "short_name": "GAME HUB",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#080808",
+  "theme_color": "#090909",
+  "description": "A mobile gaming launcher and practice hub.",
+  "icons": [
+    { "src": "./icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}
