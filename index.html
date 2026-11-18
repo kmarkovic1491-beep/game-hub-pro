@@ -24,10 +24,49 @@ main{max-width:900px;margin:auto;padding:0 16px 90px}.section-head{display:flex;
 .drill{height:190px;background:#080808;border:1px solid #303030;border-radius:12px;margin-top:12px;position:relative;overflow:hidden;display:grid;place-items:center;color:#777;font-size:13px;text-align:center;padding:12px}
 footer{text-align:center;color:#777;font-size:11px;padding:24px 10px 0}.notice{font-size:11px;color:#888;margin-top:12px}
 @media(min-width:650px){.tools{grid-template-columns:1fr 1fr}.games{grid-template-columns:repeat(4,minmax(0,1fr))}.game{min-height:170px}}
+
+/* Custom practice menu */
+.menu-launch{position:fixed;right:14px;bottom:calc(18px + env(safe-area-inset-bottom));z-index:20;background:#ff3038;color:#fff;border:1px solid #ff8589;border-radius:14px;padding:13px 16px;font-weight:950;box-shadow:0 8px 30px #0009;cursor:pointer}
+.mod-panel{position:fixed;z-index:30;left:50%;top:50%;transform:translate(-50%,-50%);width:min(92vw,390px);background:#101010;border:1px solid #a52a30;border-radius:17px;box-shadow:0 20px 70px #000c;overflow:hidden;display:none}
+.mod-panel.show{display:block}.mod-head{padding:14px;background:linear-gradient(90deg,#29090b,#151515);display:flex;justify-content:space-between;align-items:center;touch-action:none;cursor:grab;border-bottom:1px solid #472024}
+.mod-head strong{letter-spacing:.1em}.mod-head small{display:block;color:#ff777d;font-size:10px;margin-top:3px}.mod-close{background:#292929;color:white;border:1px solid #444;border-radius:8px;padding:7px 10px;font-weight:900}
+.mod-tabs{display:flex;gap:6px;padding:10px;border-bottom:1px solid #292929}.mod-tab{flex:1;background:#1d1d1d;border:1px solid #333;color:#aaa;padding:9px 4px;border-radius:8px;font-size:11px;font-weight:900}.mod-tab.active{background:#491216;border-color:#ff3038;color:white}
+.mod-content{padding:14px;max-height:55vh;overflow:auto}.mod-row{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:11px 0;border-bottom:1px solid #252525}.mod-row:last-child{border:0}.mod-row b{font-size:13px}.mod-row small{display:block;color:#888;font-size:11px;margin-top:2px}.mod-row input[type=checkbox]{width:20px;height:20px;accent-color:#ff3038}.mod-row input[type=range]{width:120px;accent-color:#ff3038}.mod-note{color:#999;font-size:11px;line-height:1.5;margin:10px 0 0}
+@media(max-width:420px){.mod-panel{top:46%;}.mod-content{max-height:48vh}}
+
 </style>
 </head>
 <body>
 <header><div class="brand">CART3R.JAILBREAK :</div><div class="logo">GAME HUB <span>PRO</span></div><p class="sub">Your mobile gaming hub. Quick links, clean setup, practice tools.</p></header>
+
+<button class="menu-launch" id="menuLaunch">☰ PRACTICE MENU</button>
+<section class="mod-panel" id="practiceMenu" aria-label="Practice menu">
+ <div class="mod-head" id="menuDrag"><div><strong>GAME HUB // MENU</strong><small>STANDALONE PRACTICE CONTROLS</small></div><button class="mod-close" id="menuClose">✕</button></div>
+ <div class="mod-tabs" role="tablist">
+  <button class="mod-tab active" data-tab="aim">AIM</button><button class="mod-tab" data-tab="build">BUILD</button><button class="mod-tab" data-tab="hud">HUD</button><button class="mod-tab" data-tab="settings">SETTINGS</button>
+ </div>
+ <div class="mod-content" id="menuContent">
+  <div class="menu-page" data-page="aim">
+   <div class="mod-row"><div><b>Aim practice</b><small>Enable the built-in reflex trainer</small></div><input type="checkbox" checked></div>
+   <div class="mod-row"><div><b>Target highlight</b><small>Highlight targets in our practice arena only</small></div><input type="checkbox" checked></div>
+   <div class="mod-row"><div><b>Practice target size</b><small>Use the slider in Settings</small></div><span>Normal</span></div>
+  </div>
+  <div class="menu-page" data-page="build" hidden>
+   <div class="mod-row"><div><b>Build drills</b><small>Show standalone build sequences</small></div><input type="checkbox" checked></div>
+   <div class="mod-row"><div><b>Sequence</b><small>Wall, ramp, floor and edit patterns</small></div><button class="action" style="margin:0" id="menuNextDrill">NEXT</button></div>
+  </div>
+  <div class="menu-page" data-page="hud" hidden>
+   <div class="mod-row"><div><b>Practice HUD</b><small>Show score and timer in our trainer</small></div><input type="checkbox" checked></div>
+   <div class="mod-row"><div><b>Crosshair preview</b><small>Decorative preview inside this menu only</small></div><span style="color:#ff555c;font-size:20px">＋</span></div>
+  </div>
+  <div class="menu-page" data-page="settings" hidden>
+   <div class="mod-row"><div><b>Practice sensitivity</b><small>Trainer setting only</small></div><input id="sensitivity" type="range" min="1" max="100" value="50"></div>
+   <div class="mod-row"><div><b>Target size</b><small>Trainer setting only</small></div><input id="targetSize" type="range" min="40" max="100" value="74"></div>
+   <p class="mod-note">These controls affect only the built-in GAME HUB PRO practice tools. They do not connect to, modify, or provide advantages in Fortnite or any other live game.</p>
+  </div>
+ </div>
+</section>
+
 <main>
 <div class="section-head"><h2>YOUR GAMES</h2><span class="tag">MOBILE HUB</span></div>
 <section class="games" aria-label="Games">
@@ -54,6 +93,21 @@ start.addEventListener('click',()=>{clearInterval(tick);score=0;remaining=20;run
 target.addEventListener('click',()=>{if(!running)return;score++;scoreEl.textContent=score;moveTarget();});
 const drills=['WALL → RAMP → FLOOR → EDIT','RAMP → FLOOR → CONE → EDIT','WALL → FLOOR → RAMP → RESET','FLOOR → CONE → EDIT → RESET'];let drill=0;
 document.getElementById('next').addEventListener('click',()=>{drill=(drill+1)%drills.length;document.getElementById('sequence').textContent=drills[drill];});
+
+const menu=document.getElementById('practiceMenu'),launch=document.getElementById('menuLaunch'),closeMenu=document.getElementById('menuClose'),dragHandle=document.getElementById('menuDrag');
+launch.addEventListener('click',()=>menu.classList.toggle('show'));
+closeMenu.addEventListener('click',()=>menu.classList.remove('show'));
+document.querySelectorAll('.mod-tab').forEach(tab=>tab.addEventListener('click',()=>{
+ document.querySelectorAll('.mod-tab').forEach(t=>t.classList.toggle('active',t===tab));
+ document.querySelectorAll('.menu-page').forEach(p=>p.hidden=p.dataset.page!==tab.dataset.tab);
+}));
+document.getElementById('menuNextDrill').addEventListener('click',()=>document.getElementById('next').click());
+let drag=null;
+dragHandle.addEventListener('pointerdown',e=>{if(e.target.closest('button'))return;const r=menu.getBoundingClientRect();drag={x:e.clientX-r.left,y:e.clientY-r.top};menu.style.transform='none';menu.style.left=r.left+'px';menu.style.top=r.top+'px';dragHandle.setPointerCapture(e.pointerId);});
+dragHandle.addEventListener('pointermove',e=>{if(!drag)return;const x=Math.max(6,Math.min(innerWidth-menu.offsetWidth-6,e.clientX-drag.x));const y=Math.max(8,Math.min(innerHeight-menu.offsetHeight-8,e.clientY-drag.y));menu.style.left=x+'px';menu.style.top=y+'px';});
+function endDrag(){drag=null;}dragHandle.addEventListener('pointerup',endDrag);dragHandle.addEventListener('pointercancel',endDrag);
+document.getElementById('targetSize').addEventListener('input',e=>{target.style.width=e.target.value+'px';target.style.height=e.target.value+'px';});
+
 if('serviceWorker' in navigator && location.protocol.startsWith('http')){window.addEventListener('load',()=>navigator.serviceWorker.register('./sw.js').catch(()=>{}));}
 </script>
 </body></html>
