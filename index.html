@@ -1,135 +1,47 @@
 <!doctype html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="theme-color" content="#0b1220">
-<meta name="description" content="Explore the history of Microsoft Windows in an interactive browser desktop simulator.">
-<link rel="manifest" href="./manifest.webmanifest">
-<link rel="icon" href="./icon.svg" type="image/svg+xml">
-<title>Windows Evolution — Interactive Simulator</title>
-<style>
-:root{--accent:#4aa3ff;--glass:rgba(18,31,50,.78);--panel:rgba(15,24,38,.94);--wall:#142c49;--task:rgba(9,15,24,.78);--text:#f5f8ff;--muted:#b8c8da;--border:rgba(255,255,255,.17);--shadow:0 18px 60px #0008}
-*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;font-family:"Segoe UI",system-ui,-apple-system,sans-serif;color:var(--text);background:#101d2c}button,input{font:inherit}button{cursor:pointer;color:inherit}#desktop{position:relative;width:100%;height:100%;overflow:hidden;background:radial-gradient(ellipse at 74% 30%,#4e91c6 0,transparent 25%),radial-gradient(ellipse at 22% 72%,#1d547d 0,transparent 34%),linear-gradient(135deg,#071426,#17466d 55%,#0b1b30);transition:background .35s}
-#desktop:before{content:"";position:absolute;inset:0;background:linear-gradient(125deg,transparent 38%,#a5d9ff18 39%,transparent 61%),radial-gradient(ellipse at 50% 110%,#07111d99,transparent 58%);pointer-events:none}
-#desktop[data-style="classic"]{background:linear-gradient(135deg,#008080,#006c70)}#desktop[data-style="win95"]{background:#008080}#desktop[data-style="xp"]{background:linear-gradient(135deg,#1687d4,#42b9ec 48%,#0756a5)}#desktop[data-style="vista"]{background:radial-gradient(ellipse at 50% 0,#8ab6d5,#203c5b 70%)}#desktop[data-style="win7"]{background:radial-gradient(ellipse at 50% 10%,#62a6d7,#0c3158 75%)}#desktop[data-style="win8"]{background:linear-gradient(135deg,#0879a9,#04a6c8)}#desktop[data-style="win10"]{background:radial-gradient(ellipse at 75% 45%,#176aa8,#071629 70%)}#desktop[data-style="win11"]{background:radial-gradient(ellipse at 50% 48%,#345d94,#142541 55%,#090f1c)}
-#desktop[data-style="win11"]:after{content:"";position:absolute;width:min(54vw,520px);aspect-ratio:1;left:50%;top:45%;transform:translate(-50%,-50%);background:linear-gradient(135deg,#4db4ff,#1651a7);clip-path:polygon(0 0,47% 0,47% 47%,0 47%,0 53%,47% 53%,47% 100%,0 100%,53% 100%,53% 53%,100% 53%,100% 47%,53% 47%,53% 0,100% 0,100% 47%,53% 47%);opacity:.23;filter:drop-shadow(0 0 35px #4baaff)}
-#desktopIcons{position:absolute;z-index:2;top:14px;left:12px;display:flex;flex-direction:column;gap:9px;max-height:calc(100% - 90px);flex-wrap:wrap;align-content:flex-start}
-.desk-icon{width:82px;min-height:76px;padding:6px 3px;border:1px solid transparent;background:transparent;border-radius:6px;display:flex;flex-direction:column;align-items:center;gap:4px;text-shadow:0 1px 4px #000;font-size:12px;text-align:center}.desk-icon:hover,.desk-icon:focus{background:#ffffff20;border-color:#ffffff40;outline:none}.desk-icon .glyph{font-size:30px;line-height:1.2;filter:drop-shadow(0 2px 3px #0005)}
-#topInfo{position:absolute;z-index:3;right:18px;top:14px;text-align:right;text-shadow:0 1px 5px #0008;font-size:12px;color:#e8f4ff}#topInfo strong{display:block;font-size:14px}
-#taskbar{position:absolute;z-index:50;left:0;right:0;bottom:0;height:52px;background:var(--task);backdrop-filter:blur(22px);border-top:1px solid #ffffff25;display:flex;align-items:center;padding:0 10px;gap:8px;box-shadow:0 -8px 30px #0002}
-#startBtn{height:40px;min-width:44px;border:0;background:transparent;border-radius:9px;font-size:23px;display:grid;place-items:center}#startBtn:hover,#taskApps button:hover{background:#ffffff20}
-#taskApps{display:flex;align-items:center;gap:4px;flex:1;min-width:0}#taskApps button{height:38px;max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;background:transparent;border:0;border-radius:7px;padding:0 12px;font-size:12px}#taskApps button.active{background:#ffffff24;border-bottom:2px solid var(--accent)}
-#tray{display:flex;align-items:center;gap:12px;font-size:12px;padding:0 8px;white-space:nowrap}#clock{text-align:right;line-height:1.3}
-#startMenu{position:absolute;z-index:60;left:10px;bottom:60px;width:min(390px,calc(100vw - 20px));max-height:min(570px,calc(100dvh - 85px));overflow:auto;background:var(--panel);backdrop-filter:blur(28px);border:1px solid var(--border);border-radius:14px;box-shadow:var(--shadow);padding:18px;display:none}#startMenu.show{display:block;animation:pop .16s ease-out}@keyframes pop{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
-.start-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:15px}.start-head b{font-size:17px}.search{width:100%;padding:11px 13px;background:#ffffff12;border:1px solid var(--border);border-radius:8px;color:white;outline:none;margin-bottom:14px}.app-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}.app-tile{border:1px solid transparent;background:#ffffff09;border-radius:9px;padding:12px 5px;display:flex;flex-direction:column;align-items:center;gap:7px;font-size:11px}.app-tile:hover{background:#ffffff1b;border-color:var(--border)}.app-tile span{font-size:25px}.start-foot{border-top:1px solid var(--border);margin-top:15px;padding-top:12px;display:flex;justify-content:space-between;align-items:center;font-size:12px;color:var(--muted)}
-.window{position:absolute;z-index:10;left:50%;top:48%;transform:translate(-50%,-50%);width:min(680px,calc(100vw - 28px));height:min(470px,calc(100dvh - 100px));min-height:220px;background:var(--panel);border:1px solid var(--border);border-radius:12px;box-shadow:var(--shadow);overflow:hidden;display:flex;flex-direction:column;backdrop-filter:blur(24px)}.window.focus{z-index:30}.window.maximized{left:8px!important;top:8px!important;transform:none!important;width:calc(100vw - 16px)!important;height:calc(100dvh - 68px)!important}
-.win-title{height:42px;flex:none;display:flex;align-items:center;justify-content:space-between;padding-left:13px;background:#ffffff0b;border-bottom:1px solid #ffffff16;cursor:grab;touch-action:none}.win-title:active{cursor:grabbing}.win-name{display:flex;align-items:center;gap:9px;font-size:13px;font-weight:600}.win-controls{display:flex;height:100%}.win-controls button{width:43px;border:0;background:transparent;font-size:14px}.win-controls button:hover{background:#ffffff22}.win-controls button:last-child:hover{background:#d93645}
-.win-body{flex:1;min-height:0;overflow:auto;padding:17px;font-size:13px}.toolbar{display:flex;gap:7px;align-items:center;padding:9px 12px;border-bottom:1px solid var(--border);font-size:12px}.toolbar button,.soft-btn{background:#ffffff12;border:1px solid var(--border);border-radius:6px;padding:7px 10px}.file-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:10px;padding-top:14px}.file-item{padding:14px 8px;border-radius:8px;text-align:center;background:#ffffff08;border:1px solid transparent}.file-item:hover{border-color:var(--border);background:#ffffff14}.file-item span{display:block;font-size:28px;margin-bottom:7px}
-.note-area{width:100%;height:100%;min-height:180px;background:transparent;border:0;resize:none;color:var(--text);outline:none;font:14px/1.6 ui-monospace,monospace}.calc{max-width:310px;margin:auto}.calc-display{width:100%;padding:17px;background:#0003;border:1px solid var(--border);border-radius:9px;text-align:right;font-size:26px;margin-bottom:10px;color:white}.calc-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}.calc-grid button{padding:15px 5px;border:1px solid var(--border);background:#ffffff10;border-radius:8px;font-size:16px}.calc-grid button:hover{background:#ffffff25}
-.settings-list{display:grid;gap:9px}.setting{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px;background:#ffffff09;border:1px solid var(--border);border-radius:9px}.setting small{display:block;color:var(--muted);margin-top:3px}.setting select,.setting input{max-width:145px;background:#17283b;color:white;border:1px solid var(--border);border-radius:6px;padding:7px}
-.version-layout{display:grid;grid-template-columns:1fr 1.1fr;gap:18px;align-items:center}.version-art{min-height:210px;border-radius:13px;background:linear-gradient(135deg,#ffffff20,#ffffff05);border:1px solid var(--border);display:grid;place-items:center;font-size:78px}.version-copy h1{font-size:clamp(25px,4vw,40px);margin:0 0 6px;letter-spacing:-1.5px}.version-copy p{color:var(--muted);line-height:1.6}.chip{display:inline-block;padding:5px 9px;border-radius:99px;background:#ffffff14;border:1px solid var(--border);font-size:11px;margin:3px}
-.context{position:absolute;z-index:80;display:none;min-width:170px;background:#111d2c;border:1px solid var(--border);border-radius:8px;box-shadow:var(--shadow);padding:6px}.context button{display:block;width:100%;text-align:left;border:0;background:transparent;padding:9px;border-radius:5px;font-size:12px}.context button:hover{background:#ffffff1b}
-#fps{position:absolute;z-index:4;left:12px;bottom:62px;font:11px ui-monospace,monospace;color:#ffffffa8;text-shadow:0 1px 4px #000}
-#toast{position:absolute;z-index:100;left:50%;bottom:68px;transform:translateX(-50%);background:#101b2b;border:1px solid var(--border);border-radius:8px;padding:9px 14px;font-size:12px;opacity:0;pointer-events:none;transition:opacity .2s}#toast.show{opacity:1}
-@media(max-width:560px){#topInfo{display:none}#desktopIcons{gap:4px}.desk-icon{width:67px;min-height:68px;font-size:11px}.desk-icon .glyph{font-size:26px}#taskbar{height:52px;padding:0 5px;gap:3px}#taskApps button{max-width:95px;padding:0 7px}#tray{gap:5px;padding:0 3px}.window{height:min(520px,calc(100dvh - 92px))}.version-layout{grid-template-columns:1fr;gap:10px}.version-art{min-height:105px;font-size:48px}.version-copy h1{font-size:26px}.win-controls button{width:37px}}
-
-/* Performance-friendly fallbacks for phones and lower-power devices */
-@media (max-width: 760px), (hover: none) {
-  #desktop, #desktop:before, #desktop:after { transition: none !important; }
-  #desktop:before { opacity: .45; }
-  #startMenu, .window, #taskbar { backdrop-filter: none !important; -webkit-backdrop-filter: none !important; }
-  .window { box-shadow: 0 8px 24px #0005; }
-  #taskbar { background: rgba(9,15,24,.96); }
-  #startMenu { background: #101c2b; }
-}
-@media (prefers-reduced-motion: reduce) {
-  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
-}
-</style>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#101a2b"><title>Windows 11 Pro</title>
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-<div id="desktop" data-style="win11">
- <div id="desktopIcons">
-  <button class="desk-icon" data-app="explorer"><span class="glyph">📁</span>File Explorer</button>
-  <button class="desk-icon" data-app="browser"><span class="glyph">🌐</span>Browser</button>
-  <button class="desk-icon" data-app="notepad"><span class="glyph">📝</span>Notepad</button>
-  <button class="desk-icon" data-app="versions"><span class="glyph">🪟</span>Windows versions</button>
-  <button class="desk-icon" data-app="settings"><span class="glyph">⚙️</span>Settings</button>
- </div>
- <div id="topInfo"><strong id="edition">Windows 11 Pro</strong><span>Evolution Simulator</span></div>
- <div id="fps">Rendering: <span id="fpsValue">—</span> FPS · browser animation</div>
- <div id="startMenu">
-  <div class="start-head"><b>Start</b><span id="startEdition" style="color:var(--muted);font-size:11px">Windows 11 Pro</span></div>
-  <input id="appSearch" class="search" placeholder="Search apps and settings…" autocomplete="off">
-  <div class="app-grid" id="appGrid">
-   <button class="app-tile" data-app="explorer"><span>📁</span>File Explorer</button><button class="app-tile" data-app="browser"><span>🌐</span>Browser</button><button class="app-tile" data-app="notepad"><span>📝</span>Notepad</button><button class="app-tile" data-app="calculator"><span>🧮</span>Calculator</button><button class="app-tile" data-app="settings"><span>⚙️</span>Settings</button><button class="app-tile" data-app="versions"><span>🪟</span>Windows versions</button><button class="app-tile" data-app="about"><span>ℹ️</span>About</button>
+<div id="desktop" class="wallpaper-bloom">
+  <div class="desktop-icons">
+    <button class="desktop-icon" data-open="explorer"><span>📁</span><small>File Explorer</small></button>
+    <button class="desktop-icon" data-open="maker"><span>🌐</span><small>Website Maker</small></button>
+    <button class="desktop-icon" data-open="notepad"><span>📝</span><small>Notepad</small></button>
+    <button class="desktop-icon" data-open="settings"><span>⚙️</span><small>Settings</small></button>
+    <button class="desktop-icon" data-open="recycle"><span>🗑️</span><small>Recycle Bin</small></button>
   </div>
-  <div class="start-foot"><span>● Local demo account</span><button class="soft-btn" id="powerBtn">⏻ Power</button></div>
- </div>
- <div id="taskbar"><button id="startBtn" aria-label="Start menu">⊞</button><div id="taskApps"></div><div id="tray"><span>◖◗</span><span>⌁</span><div id="clock"><div id="clockTime">12:00</div><div id="clockDate">01/01/2026</div></div></div></div>
- <div class="context" id="contextMenu"><button data-action="refresh">↻ Refresh desktop</button><button data-action="versions">🪟 Switch Windows version</button><button data-action="settings">⚙ Display settings</button><button data-action="about">ⓘ About simulator</button></div>
- <div id="toast"></div>
+  <section id="startMenu" class="start-menu glass hidden">
+    <div class="start-search"><span>⌕</span><input id="startSearch" placeholder="Search for apps, settings, and documents"></div>
+    <div class="start-heading"><b>Pinned</b><span>All apps　›</span></div>
+    <div class="pinned-grid">
+      <button data-open="maker"><i>🌐</i>Website Maker</button><button data-open="explorer"><i>📁</i>File Explorer</button>
+      <button data-open="notepad"><i>📝</i>Notepad</button><button data-open="settings"><i>⚙️</i>Settings</button>
+      <button data-open="browser"><i>🌍</i>Browser</button><button data-open="calculator"><i>🧮</i>Calculator</button>
+    </div>
+    <div class="start-heading"><b>Recommended</b><span>More　›</span></div>
+    <div class="recommended"><span>🌐</span><div><b>Website Maker</b><small>Create and export a website</small></div></div>
+    <div class="start-footer"><span>👤 Local user</span><button id="powerButton" title="Power options">⏻</button></div>
+    <div id="powerOptions" class="power-options hidden"><button data-power="lock">Lock</button><button data-power="restart">Restart</button></div>
+  </section>
+  <div id="windowLayer"></div>
+  <div id="taskbar">
+    <div class="taskbar-center">
+      <button class="task-icon start-button" id="startButton" title="Start">⊞</button>
+      <button class="task-search" id="taskSearch">⌕ <span>Search</span></button>
+      <button class="task-icon" data-open="maker" title="Website Maker">🌐</button>
+      <button class="task-icon" data-open="explorer" title="File Explorer">📁</button>
+      <button class="task-icon" data-open="notepad" title="Notepad">📝</button>
+      <button class="task-icon" data-open="settings" title="Settings">⚙️</button>
+      <div id="runningApps"></div>
+    </div>
+    <div class="system-tray"><span title="Network">◉</span><span title="Volume">🔊</span><span title="Battery">▰</span><div class="clock"><b id="clockTime">--:--</b><small id="clockDate">---</small></div></div>
+  </div>
+  <div id="lockScreen" class="lock-screen hidden"><div class="lock-time" id="lockTime">--:--</div><div id="lockDate"></div><button id="unlockButton">Click to continue</button></div>
+  <div id="toast" class="toast hidden"></div>
 </div>
-<script>
-(function(){
-'use strict';
-const $=s=>document.querySelector(s), desktop=$('#desktop'), startMenu=$('#startMenu'), windows=new Map();let z=20,activeVersion='11';
-const versions=[
-{id:'1',name:'Windows 1.0',year:'1985',style:'classic',icon:'▦',desc:'The first public Windows release introduced a graphical environment running on top of MS-DOS, with tiled application windows and mouse support.',tag:'The beginning'},
-{id:'2',name:'Windows 2.0',year:'1987',style:'classic',icon:'▤',desc:'Overlapping windows arrived alongside keyboard shortcuts and expanded support for early desktop applications.',tag:'Overlapping windows'},
-{id:'3',name:'Windows 3.0',year:'1990',style:'classic',icon:'▥',desc:'A major visual and usability step, with Program Manager, File Manager, improved graphics and broader software support.',tag:'Program Manager'},
-{id:'3.1',name:'Windows 3.1',year:'1992',style:'classic',icon:'▥',desc:'Refined the 3.x experience with TrueType fonts, multimedia support and a more polished desktop environment.',tag:'TrueType era'},
-{id:'95',name:'Windows 95',year:'1995',style:'win95',icon:'🪟',desc:'Introduced the Start menu and taskbar to a mainstream audience, bringing a familiar desktop layout that shaped later versions.',tag:'Start menu debut'},
-{id:'98',name:'Windows 98',year:'1998',style:'win95',icon:'🖥️',desc:'Built on the Windows 95 interface with stronger web integration, USB support and hardware improvements.',tag:'Web integration'},
-{id:'me',name:'Windows Me',year:'2000',style:'win95',icon:'💿',desc:'A home-focused release in the Windows 9x family, featuring System Restore and multimedia tools.',tag:'Home multimedia'},
-{id:'2000',name:'Windows 2000',year:'2000',style:'win95',icon:'🏢',desc:'A business-oriented Windows NT release focused on reliability, administration and enterprise networking.',tag:'Business edition'},
-{id:'xp',name:'Windows XP',year:'2001',style:'xp',icon:'🌄',desc:'Known for its colorful Luna theme, a redesigned Start menu and a long-lived combination of home and business editions.',tag:'Luna design'},
-{id:'vista',name:'Windows Vista',year:'2007',style:'vista',icon:'💠',desc:'Introduced the Aero glass visual style, desktop gadgets, a redesigned search experience and stronger security prompts.',tag:'Aero glass'},
-{id:'7',name:'Windows 7',year:'2009',style:'win7',icon:'🪟',desc:'Refined Aero, taskbar previews and window management, becoming a widely liked desktop release.',tag:'Aero refinement'},
-{id:'8',name:'Windows 8',year:'2012',style:'win8',icon:'▦',desc:'Introduced the Start screen and tile-first interface, designed to span traditional PCs and touch devices.',tag:'Tile interface'},
-{id:'8.1',name:'Windows 8.1',year:'2013',style:'win8',icon:'▦',desc:'Updated the Windows 8 experience with additional personalization, search and Start screen refinements.',tag:'Start refinements'},
-{id:'10',name:'Windows 10',year:'2015',style:'win10',icon:'🪟',desc:'Returned to a desktop-focused Start menu, introduced virtual desktops and continued Windows as an evolving service.',tag:'Modern desktop'},
-{id:'11',name:'Windows 11 Pro',year:'2021',style:'win11',icon:'🪟',desc:'A centered taskbar, refreshed Start menu, rounded windows, Snap layouts and a calmer modern visual language.',tag:'Modern Windows'}
-];
-function toast(msg){const t=$('#toast');t.textContent=msg;t.classList.add('show');clearTimeout(toast.timer);toast.timer=setTimeout(()=>t.classList.remove('show'),2100)}
-function version(){return versions.find(v=>v.id===activeVersion)||versions[14]}
-function setVersion(id){const v=versions.find(x=>x.id===id);if(!v)return;activeVersion=id;desktop.dataset.style=v.style;$('#edition').textContent=v.name;$('#startEdition').textContent=v.name;$('#versionSelect')&&($('#versionSelect').value=id);$('#startBtn').textContent=['1','2','3','3.1','95','98','me','2000'].includes(id)?'⊞':'⊞';document.title=v.name+' — Windows Evolution';toast('Switched to '+v.name)}
-function openApp(app){
- startMenu.classList.remove('show');if(windows.has(app)){const old=windows.get(app);old.style.display='flex';old.classList.add('focus');old.style.zIndex=++z;renderTasks();return}
- const titles={explorer:'File Explorer',browser:'Browser',notepad:'Notepad',calculator:'Calculator',settings:'Settings',versions:'Windows versions',about:'About this simulator'};
- const icons={explorer:'📁',browser:'🌐',notepad:'📝',calculator:'🧮',settings:'⚙️',versions:'🪟',about:'ℹ️'};
- const win=document.createElement('section');win.className='window focus';win.dataset.app=app;win.style.zIndex=++z;
- win.innerHTML='<div class="win-title"><div class="win-name"><span>'+icons[app]+'</span>'+titles[app]+'</div><div class="win-controls"><button data-win="min" aria-label="Minimize">—</button><button data-win="max" aria-label="Maximize">□</button><button data-win="close" aria-label="Close">✕</button></div></div><div class="win-body">'+appContent(app)+'</div>';
- desktop.appendChild(win);windows.set(app,win);win.addEventListener('pointerdown',()=>focusWin(win));win.querySelectorAll('[data-win]').forEach(b=>b.addEventListener('click',e=>{e.stopPropagation();const a=b.dataset.win;if(a==='close'){win.remove();windows.delete(app);renderTasks()}if(a==='min'){win.style.display='none';renderTasks()}if(a==='max')win.classList.toggle('maximized')}));
- const bar=win.querySelector('.win-title');let drag=null;bar.addEventListener('pointerdown',e=>{if(e.target.closest('button')||win.classList.contains('maximized'))return;focusWin(win);const r=win.getBoundingClientRect();drag={x:e.clientX-r.left,y:e.clientY-r.top};bar.setPointerCapture(e.pointerId)});bar.addEventListener('pointermove',e=>{if(!drag)return;win.style.left=Math.max(0,Math.min(innerWidth-win.offsetWidth,e.clientX-drag.x))+'px';win.style.top=Math.max(0,Math.min(innerHeight-65,e.clientY-drag.y))+'px';win.style.transform='none'});bar.addEventListener('pointerup',()=>drag=null);bar.addEventListener('pointercancel',()=>drag=null);
- bindApp(app,win);renderTasks()
-}
-function focusWin(win){document.querySelectorAll('.window').forEach(w=>w.classList.remove('focus'));win.classList.add('focus');win.style.zIndex=++z;renderTasks()}
-function renderTasks(){$('#taskApps').innerHTML='';windows.forEach((w,app)=>{const b=document.createElement('button');b.textContent=w.querySelector('.win-name').textContent;b.classList.toggle('active',w.style.display!=='none'&&w.classList.contains('focus'));b.onclick=()=>{if(w.style.display==='none')w.style.display='flex';focusWin(w)};$('#taskApps').appendChild(b)})}
-function appContent(app){
- if(app==='explorer')return '<div class="toolbar"><button>←</button><button>→</button><button>↑</button><span>This PC　›　Desktop</span></div><div class="file-list"><div class="file-item"><span>📁</span>Desktop</div><div class="file-item"><span>📁</span>Documents</div><div class="file-item"><span>📁</span>Downloads</div><div class="file-item"><span>🖼️</span>Pictures</div><div class="file-item"><span>🎵</span>Music</div><div class="file-item"><span>💾</span>Local Disk (C:)</div></div><p style="color:var(--muted);margin-top:18px">This is a simulated file browser. It does not access your device files.</p>';
- if(app==='browser')return '<div class="toolbar"><button>←</button><button>→</button><input id="demoAddress" class="search" style="margin:0;padding:7px 10px;flex:1" value="https://example.com" aria-label="Address"><button id="goDemo">Go</button></div><div style="padding:28px;text-align:center"><div style="font-size:45px">🌐</div><h2>Welcome to the demo browser</h2><p style="color:var(--muted)">A visual mock browser window. External websites are not loaded inside this simulator.</p><button class="soft-btn" id="exampleBtn">Open example.com in new tab ↗</button></div>';
- if(app==='notepad')return '<div class="toolbar"><button id="noteSave">Save text</button><button id="noteClear">Clear</button><span style="color:var(--muted)">Untitled — Notepad</span></div><textarea class="note-area" id="noteText" placeholder="Start typing…"></textarea>';
- if(app==='calculator')return '<div class="calc"><input class="calc-display" id="calcDisplay" value="0" readonly><div class="calc-grid">'+['7','8','9','÷','4','5','6','×','1','2','3','−','0','.','C','+','='].map(k=>'<button data-key="'+k+'">'+k+'</button>').join('')+'</div></div>';
- if(app==='settings')return '<h2 style="margin-top:0">Personalization</h2><p style="color:var(--muted)">Choose any Windows era to preview its desktop atmosphere.</p><div class="settings-list"><label class="setting"><span><b>Windows version</b><small>Change the simulated desktop theme</small></span><select id="versionSelect">'+versions.map(v=>'<option value="'+v.id+'" '+(v.id===activeVersion?'selected':'')+'>'+v.name+'</option>').join('')+'</select></label><label class="setting"><span><b>Accent color</b><small>Window and highlight color</small></span><input type="color" id="accentPick" value="#4aa3ff"></label><label class="setting"><span><b>Animation quality</b><small>Visual effects in this browser demo</small></span><select id="quality"><option>Balanced</option><option>Reduced motion</option></select></label></div><p style="color:var(--muted);margin-top:14px">The simulator imitates interface ideas; it does not install or boot Windows.</p>';
- if(app==='versions')return '<h2 style="margin-top:0">Windows through the years</h2><p style="color:var(--muted)">Select a release to switch the desktop preview.</p><div class="file-list">'+versions.map(v=>'<button class="file-item version-choice" data-version="'+v.id+'"><span>'+v.icon+'</span>'+v.name+'<small style="display:block;color:var(--muted)">'+v.year+'</small></button>').join('')+'</div>';
- if(app==='about')return '<div class="version-layout"><div class="version-art">🪟</div><div class="version-copy"><span class="chip">BROWSER SIMULATOR</span><h1>Windows Evolution</h1><p>Explore desktop design across 40 years of Windows history, from Windows 1.0 to Windows 11.</p><p><b>Important:</b> This is an original interface-inspired simulation, not a copy of Windows, an operating system, or a virtual machine.</p><span class="chip">15 releases</span><span class="chip">Interactive desktop</span><span class="chip">Mobile friendly</span></div></div>';
- return ''
-}
-function bindApp(app,win){
- if(app==='settings'){win.querySelector('#versionSelect').onchange=e=>setVersion(e.target.value);win.querySelector('#accentPick').oninput=e=>document.documentElement.style.setProperty('--accent',e.target.value);win.querySelector('#quality').onchange=e=>{document.documentElement.style.setProperty('scroll-behavior',e.target.value==='Reduced motion'?'auto':'smooth');toast(e.target.value+' effects selected')}}
- if(app==='versions')win.querySelectorAll('[data-version]').forEach(b=>b.onclick=()=>{setVersion(b.dataset.version);win.remove();windows.delete(app);renderTasks()});
- if(app==='browser'){win.querySelector('#exampleBtn').onclick=()=>window.open('https://example.com','_blank','noopener');win.querySelector('#goDemo').onclick=()=>toast('This browser is a visual demo only')}
- if(app==='notepad'){win.querySelector('#noteClear').onclick=()=>win.querySelector('#noteText').value='';win.querySelector('#noteSave').onclick=()=>{const blob=new Blob([win.querySelector('#noteText').value],{type:'text/plain'}),url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='notes.txt';a.click();URL.revokeObjectURL(url)}}
- if(app==='calculator'){let expr='';const display=win.querySelector('#calcDisplay');win.querySelectorAll('[data-key]').forEach(b=>b.onclick=()=>{const k=b.dataset.key;if(k==='C'){expr='';display.value='0';return}if(k==='='){try{const safe=expr.replace(/×/g,'*').replace(/÷/g,'/').replace(/−/g,'-');if(!/^[0-9+*/.() -]+$/.test(safe))throw Error();const result=Function('"use strict";return ('+safe+')')();expr=Number.isFinite(result)?String(result):'';display.value=expr||'Error'}catch{expr='';display.value='Error'}return}expr+=k;display.value=expr})}
-}
-$('#startBtn').onclick=()=>startMenu.classList.toggle('show');$('#powerBtn').onclick=()=>toast('This demo cannot power off your device.');$('#desktopIcons').addEventListener('click',e=>{const b=e.target.closest('[data-app]');if(b)openApp(b.dataset.app)});$('#appGrid').addEventListener('click',e=>{const b=e.target.closest('[data-app]');if(b)openApp(b.dataset.app)});$('#appSearch').addEventListener('input',e=>{const q=e.target.value.toLowerCase();$('#appGrid').querySelectorAll('[data-app]').forEach(b=>b.style.display=b.textContent.toLowerCase().includes(q)?'flex':'none')});
-desktop.addEventListener('contextmenu',e=>{if(e.target.closest('.window,#taskbar,#startMenu'))return;e.preventDefault();const m=$('#contextMenu');m.style.display='block';m.style.left=Math.min(e.clientX,innerWidth-180)+'px';m.style.top=Math.min(e.clientY,innerHeight-170)+'px'});document.addEventListener('click',e=>{if(!e.target.closest('#contextMenu'))$('#contextMenu').style.display='none';if(!e.target.closest('#startMenu,#startBtn'))startMenu.classList.remove('show')});$('#contextMenu').onclick=e=>{const a=e.target.dataset.action;if(a==='versions')openApp('versions');if(a==='settings')openApp('settings');if(a==='about')openApp('about');if(a==='refresh')toast('Desktop refreshed');$('#contextMenu').style.display='none'};
-document.addEventListener('keydown',e=>{if(e.key==='Escape'){startMenu.classList.remove('show');$('#contextMenu').style.display='none'}if((e.metaKey||e.ctrlKey)&&e.key.toLowerCase()==='e'){e.preventDefault();openApp('explorer')}if(e.key==='Meta'||e.key==='Control')return});
-function clock(){const d=new Date();$('#clockTime').textContent=d.toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});$('#clockDate').textContent=d.toLocaleDateString()}clock();setInterval(clock,30000);
-let frames=0,last=performance.now();function fps(now){frames++;if(now-last>=1000){$('#fpsValue').textContent=Math.round(frames*1000/(now-last));frames=0;last=now}requestAnimationFrame(fps)}requestAnimationFrame(fps);
-setVersion('11');
-})();
-</script>
+<script src="script.js"></script>
 </body></html>
