@@ -1,16 +1,33 @@
-# Windows Evolution Simulator
+# Windows 11 Pro Web Desktop + Website Maker
 
-An original, responsive browser-based desktop simulator inspired by the history of Microsoft Windows.
+A self-contained browser desktop simulation built with plain HTML, CSS, and vanilla JavaScript. It runs on GitHub Pages without a package manager, framework, or build step.
+
+## Files
+- index.html — desktop shell and app entry point
+- style.css — wallpaper, taskbar, windows, and app styling
+- script.js — window manager, Website Maker, File Explorer, Notepad, Settings, Calculator, and Browser
 
 ## Features
-- Switch between 15 releases, from Windows 1.0 through Windows 11 Pro
-- Interactive desktop, Start menu, taskbar, draggable app windows and context menu
-- Simulated File Explorer, browser, Notepad, calculator and personalization settings
-- Responsive layout for phones, tablets and desktop browsers
-- Lightweight requestAnimationFrame rendering loop with an FPS readout
+- Windows-style desktop, Start menu, taskbar, clock, lock/restart controls
+- Draggable, resizable, minimizable, and maximizable app windows
+- Website Maker with draggable/clickable blocks, inline text editing, properties inspector, desktop/mobile preview, local project saving, and standalone HTML export
+- File Explorer with Desktop, Documents, and Saved Websites views
+- Notepad editor with file download and saved-site opening
+- Settings with wallpaper choices and appearance toggle
+- Calculator and a simple browser launcher
 
-## Run
-Open `index.html` locally or enable GitHub Pages for the `main` branch (root folder) in Settings → Pages.
+## Run locally
+Open index.html in a modern browser. For GitHub Pages, upload all three files to the repository root.
 
-## Important
-This is a fan-made interface simulation, not Windows itself, an operating-system emulator, or a virtual machine. It does not install or run Windows software. The FPS counter reports browser animation timing; reaching 120 FPS depends on the display, browser, device and workload.
+## Publish with GitHub Pages
+1. Sign in to GitHub and open your repository (or create a new public repository).
+2. Choose Add file → Upload files.
+3. Upload index.html, style.css, and script.js together into the repository root (not inside a subfolder).
+4. Commit the upload to the main branch.
+5. Open Settings → Pages.
+6. Under Build and deployment, choose Deploy from a branch.
+7. Set the branch to main and folder to /(root), then click Save.
+8. Wait for the Pages deployment to finish. GitHub will display the published URL in the Pages settings panel.
+
+## Important limitations
+This is an interactive web desktop simulation, not a licensed copy of Windows and not a virtual machine. It cannot boot Windows, install Windows applications, access the host computer's filesystem, or run .exe programs. Projects are saved in browser local storage on the current device/browser. Exported websites are standalone HTML files; upload the exported index.html to a separate repository (or a separate Pages folder/repository) to publish that site.
