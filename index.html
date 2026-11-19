@@ -33,6 +33,19 @@
 #fps{position:absolute;z-index:4;left:12px;bottom:62px;font:11px ui-monospace,monospace;color:#ffffffa8;text-shadow:0 1px 4px #000}
 #toast{position:absolute;z-index:100;left:50%;bottom:68px;transform:translateX(-50%);background:#101b2b;border:1px solid var(--border);border-radius:8px;padding:9px 14px;font-size:12px;opacity:0;pointer-events:none;transition:opacity .2s}#toast.show{opacity:1}
 @media(max-width:560px){#topInfo{display:none}#desktopIcons{gap:4px}.desk-icon{width:67px;min-height:68px;font-size:11px}.desk-icon .glyph{font-size:26px}#taskbar{height:52px;padding:0 5px;gap:3px}#taskApps button{max-width:95px;padding:0 7px}#tray{gap:5px;padding:0 3px}.window{height:min(520px,calc(100dvh - 92px))}.version-layout{grid-template-columns:1fr;gap:10px}.version-art{min-height:105px;font-size:48px}.version-copy h1{font-size:26px}.win-controls button{width:37px}}
+
+/* Performance-friendly fallbacks for phones and lower-power devices */
+@media (max-width: 760px), (hover: none) {
+  #desktop, #desktop:before, #desktop:after { transition: none !important; }
+  #desktop:before { opacity: .45; }
+  #startMenu, .window, #taskbar { backdrop-filter: none !important; -webkit-backdrop-filter: none !important; }
+  .window { box-shadow: 0 8px 24px #0005; }
+  #taskbar { background: rgba(9,15,24,.96); }
+  #startMenu { background: #101c2b; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; scroll-behavior: auto !important; }
+}
 </style>
 </head>
 <body>
@@ -114,7 +127,7 @@ function bindApp(app,win){
 $('#startBtn').onclick=()=>startMenu.classList.toggle('show');$('#powerBtn').onclick=()=>toast('This demo cannot power off your device.');$('#desktopIcons').addEventListener('click',e=>{const b=e.target.closest('[data-app]');if(b)openApp(b.dataset.app)});$('#appGrid').addEventListener('click',e=>{const b=e.target.closest('[data-app]');if(b)openApp(b.dataset.app)});$('#appSearch').addEventListener('input',e=>{const q=e.target.value.toLowerCase();$('#appGrid').querySelectorAll('[data-app]').forEach(b=>b.style.display=b.textContent.toLowerCase().includes(q)?'flex':'none')});
 desktop.addEventListener('contextmenu',e=>{if(e.target.closest('.window,#taskbar,#startMenu'))return;e.preventDefault();const m=$('#contextMenu');m.style.display='block';m.style.left=Math.min(e.clientX,innerWidth-180)+'px';m.style.top=Math.min(e.clientY,innerHeight-170)+'px'});document.addEventListener('click',e=>{if(!e.target.closest('#contextMenu'))$('#contextMenu').style.display='none';if(!e.target.closest('#startMenu,#startBtn'))startMenu.classList.remove('show')});$('#contextMenu').onclick=e=>{const a=e.target.dataset.action;if(a==='versions')openApp('versions');if(a==='settings')openApp('settings');if(a==='about')openApp('about');if(a==='refresh')toast('Desktop refreshed');$('#contextMenu').style.display='none'};
 document.addEventListener('keydown',e=>{if(e.key==='Escape'){startMenu.classList.remove('show');$('#contextMenu').style.display='none'}if((e.metaKey||e.ctrlKey)&&e.key.toLowerCase()==='e'){e.preventDefault();openApp('explorer')}if(e.key==='Meta'||e.key==='Control')return});
-function clock(){const d=new Date();$('#clockTime').textContent=d.toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});$('#clockDate').textContent=d.toLocaleDateString()}clock();setInterval(clock,1000);
+function clock(){const d=new Date();$('#clockTime').textContent=d.toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});$('#clockDate').textContent=d.toLocaleDateString()}clock();setInterval(clock,30000);
 let frames=0,last=performance.now();function fps(now){frames++;if(now-last>=1000){$('#fpsValue').textContent=Math.round(frames*1000/(now-last));frames=0;last=now}requestAnimationFrame(fps)}requestAnimationFrame(fps);
 setVersion('11');
 })();
