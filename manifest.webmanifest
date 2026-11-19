@@ -1,13 +1,18 @@
 {
-  "name": "GAME HUB PRO",
-  "short_name": "GAME HUB",
+  "name": "Windows Evolution Simulator",
+  "short_name": "Windows Evolution",
   "start_url": "./",
   "scope": "./",
   "display": "standalone",
-  "background_color": "#080808",
-  "theme_color": "#090909",
-  "description": "A mobile gaming launcher and practice hub.",
+  "background_color": "#0b1220",
+  "theme_color": "#0b1220",
+  "description": "Explore the history of Windows in an interactive browser desktop simulator.",
   "icons": [
-    { "src": "./icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+    {
+      "src": "./icon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
   ]
 }
